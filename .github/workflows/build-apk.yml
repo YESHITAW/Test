@@ -1,0 +1,40 @@
+name: Build AutoAnswer APK
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build AutoAnswer Debug APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Grant execute permission for gradlew
+        working-directory: ./AutoAnswer
+        run: chmod +x gradlew
+
+      - name: Build Debug APK
+        working-directory: ./AutoAnswer
+        run: ./gradlew assembleDebug --stacktrace
+
+      - name: Upload Debug APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AutoAnswer-v1.0-debug
+          path: AutoAnswer/app/build/outputs/apk/debug/*.apk
+          retention-days: 14
