@@ -1,0 +1,3 @@
+<resources>
+    <style name="Theme.AutoAnswer" parent="android:Theme.Material.NoActionBar" />
+</resources>
